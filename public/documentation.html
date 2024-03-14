@@ -5,7 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Documentation</title>
 </head>
+<style>
+    table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 600px; /* Example maximum width */
+    margin: 0 auto; /* Center the table */
+}
+
+/* Apply styles to the table header (thead) */
+thead {
+    background-color: #f2f2f2;
+}
+
+/* Apply styles to table header cells (th) */
+th {
+    padding: 10px;
+    text-align: left;
+}
+
+/* Apply alternating background colors to table rows */
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Apply styles to table cells (td) */
+td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd; /* Add a bottom border for separation */
+}
+</style>
 <body>
-    <h1>Documentation</h1>
+    <h1>Documentation for MyFlix API v1.0.0</h1>
+    <p>
+        The API is the server-side component of a “movies” web application. The web
+        application will provide users with access to information about different
+        movies, directors, and genres. Users will be able to sign up, update their
+        personal information, and create a list of their favorite movies. 
+    </p>
+    <p> 
+        The API is built with REST architecture with multiple routes for the REST API, myFlix, so that clients can apply operations (creating, reading, updating, and deleting, i.e., CRUD) to files and data on the server.  
+    </p>
+    <p>
+        Errors are returned as standard HTTP response codes. Messages detailing
+        the error are included in the response body.
+    </p>
+    <table class="table">
+        <thead>
+          <tr>
+            <th>Request</th>
+            <th>URL</th>
+            <th>HTTP Method</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+              <td>Get a list of all movies</td>
+              <td>/movies</td>
+              <td>GET</td>
+            </tr>
+            <tr>
+                <td>Get data about a movie by name</td>
+                <td>/movies/:name</td>
+                <td>GET</td>
+            </tr>
+            <tr>
+                <td>Get data about movies by genre</td>
+                <td>/movies/:genre</td>
+                <td>GET</td>
+            </tr>
+            <tr>
+                <td>API Documentation</td>
+                <td>/documentation</td>
+                <td>GET</td>
+            </tr>
+        </tbody>
 </body>
 </html>

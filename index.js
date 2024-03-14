@@ -9,61 +9,72 @@ let topMovies = [
       title: '21 JUMP STREET',
       starring: 'Jonah Hill, Channing Tatum, Brie Larson, Dave Franco',
       director:  'Phil Lord, Chris Miller',
-      year: 2012
+      year: 2012,
+      genre: "comedy"
     },
     {
       title: 'ALL ABOUT MY MOTHER',
       starring: 'Cecilia Roth, Eloy Azorín, Marisa Paredes, Penélope Cruz',
       director: 'Pedro Almodóvar',
-      year: 1999
+      year: 1999,
+      genre: "comedy"
     },
     {
       title: 'AMERICAN PIE',
       starring: 'Jason Biggs, Shannon Elizabeth, Alyson Hannigan, Chris Klein',
       director: 'Paul Weitz',
-      year: 1999
+      year: 1999,
+      genre: "comedy"
     },
     {
     title: 'ANNIE HALL',
     starring: 'Woody Allen, Diane Keaton, Tony Roberts, Carol Kane',
     director: 'Woody Allen',
-    year: 1977
+    year: 1977,
+    genre: "comedy"
+  
     },
     {
     title: 'THE APARTMENT',
     starring: 'Jack Lemmon, Shirley MacLaine, Fred MacMurray, Ray Walston',
     director: 'Billy Wilder',
-    year: 1960
+    year: 1960,
+    genre: "comedy"
     },
     {
     title: 'BARBERSHOP',
     starring: 'Ice Cube, Anthony Anderson, Cedric the Entertainer, Sean Patrick Thomas',
     director: 'Tim Story',
-    year: 2002
+    year: 2002,
+    genre: "comedy"
     },
     {
     title: 'BEING THERE',
     starring: 'Peter Sellers, Shirley MacLaine, Jack Warden, Melvyn Douglas',
     director: 'Hal Ashby',
-    year: 1979
+    year: 1979,
+    genre: "comedy"
     },
     {
     title: 'BEST IN SHOW',
     starring: "Michael Hitchcock, Parker Posey, Eugene Levy, Catherine O'Hara",
     director: 'Christopher Guest',
-    year: 2000
+    year: 2000,
+    genre: "comedy"
     },
     {
     title: 'BIG',
     starring: 'Tom Hanks, Elizabeth Perkins, Robert Loggia, John Heard',
     director: 'Penny Marshall',
-    year: 1988
+    year: 1988,
+    genre: "comedy"
     },
     {
     title: 'BOOKSMART',
     starring: 'Kaitlyn Dever, Beanie Feldstein, Jessica Williams, Jason Sudeikis',
     director: 'Olivia Wilde',
-    year: 2019
+    year: 2019,
+    genre: "comedy"
     }
   ];
 
@@ -79,26 +90,25 @@ let topMovies = [
   app.get('/movies', (req, res) => {
     res.json(topMovies);
   });
-  app.get('/comedies', (req, res) => {
-    res.send('Welcome to MyFlix app!');
+
+app.get('/movies/:genre', (req, res) => {
+  res.json(topMovies.filter( (topMovies) =>
+  { return topMovies.genre === req.params.genre }));
+});
+
+ app.get('/movies/:title', (req, res) => {
+    res.json(topMovies.find( (topMovie) =>
+      { return topMovie.title === req.params.title }));
   });
   
-  app.use('/documentation.html',express.static('public'));
+  app.use('/documentation.html', express.static('public'));
   
   // create a write stream (in append mode)
   // a ‘log.txt’ file is created in root directory
-  const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
+  const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
 
   // setup the logger
   app.use(morgan('combined', {stream: accessLogStream}));
-  
-  app.get('/', (req, res) => {
-    res.send('Welcome to myFlix app!');
-  });
-  
-  app.get('/secreturl', (req, res) => {
-    res.send('This is a secret url with super top-secret content.');
-  });
   
   app.use((err, req, res, next) => {
     console.error(err.stack);
