@@ -6,7 +6,7 @@
     <title>Documentation</title>
 </head>
 <style>
-    table {
+table {
     border-collapse: collapse;
     width: 100%;
     max-width: 600px; /* Example maximum width */
@@ -47,8 +47,8 @@ td {
         The API is built with REST architecture with multiple routes for the REST API, myFlix, so that clients can apply operations (creating, reading, updating, and deleting, i.e., CRUD) to files and data on the server.  
     </p>
     <p>
-        Errors are returned as standard HTTP response codes. Messages detailing
-        the error are included in the response body.
+        Errors are returned as standard HTTP response codes. Messages about
+        error are included in the response body.
     </p>
     <table class="table">
         <thead>
@@ -56,6 +56,9 @@ td {
             <th>Request</th>
             <th>URL</th>
             <th>HTTP Method</th>
+            <th>The query parameters</th>
+            <th>Request body data format</th>
+            <th>Response body data format</th>
           </tr>
         </thead>
         <tbody>
@@ -63,21 +66,48 @@ td {
               <td>Get a list of all movies</td>
               <td>/movies</td>
               <td>GET</td>
+              <td>Required (JWT)</td>
+              <td>None</td>
+              <td>JSON array of movie objects</td>
             </tr>
             <tr>
                 <td>Get data about a movie by name</td>
                 <td>/movies/:name</td>
                 <td>GET</td>
+                <td>Required (JWT)</td>
+                <td>None</td>
+                <td>JSON response holding data of the movie required by name. For example:   
+                    {
+                    "title": "21 JUMP STREET",
+                    "starring": "Jonah Hill, Channing Tatum, Brie Larson, Dave Franco",
+                    "director": "Phil Lord, Chris Miller",
+                    "year": 2012,
+                    "genre": "comedy"
+                }, 
+            </td>
             </tr>
             <tr>
                 <td>Get data about movies by genre</td>
                 <td>/movies/:genre</td>
                 <td>GET</td>
+                <td>Required (JWT)</td>
+                <td>None</td>
+                <td>JSON response holding data of the movie required by genre. For example:   
+                    {
+                    "title": "21 JUMP STREET",
+                    "starring": "Jonah Hill, Channing Tatum, Brie Larson, Dave Franco",
+                    "director": "Phil Lord, Chris Miller",
+                    "year": 2012,
+                    "genre": "comedy"
+                }, 
             </tr>
             <tr>
                 <td>API Documentation</td>
                 <td>/documentation</td>
                 <td>GET</td>
+                <td>Required (JWT)</td>
+                <td>None</td>
+                <td>JSON response holding data of the documentation.html file</td>
             </tr>
         </tbody>
 </body>
