@@ -91,14 +91,14 @@ let topMovies = [
     res.json(topMovies);
   });
 
-app.get('/movies/:genre', (req, res) => {
-  res.json(topMovies.filter( (topMovies) =>
-  { return topMovies.genre === req.params.genre }));
-});
+  app.get('/movies/genre/:genreId', (req, res) => {
+   res.json(topMovies.filter( (topMovies) =>
+    { return topMovies.genre === req.params.genreId }));
+  });
 
- app.get('/movies/:title', (req, res) => {
+ app.get('/movies/title/:titleId', (req, res) => {
     res.json(topMovies.find( (topMovie) =>
-      { return topMovie.title === req.params.title }));
+      { return topMovie.title === req.params.titleId }));
   });
   
   app.use('/documentation.html', express.static('public'));

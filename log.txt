@@ -23,3 +23,6 @@
 ::1 - - [14/Mar/2024:11:08:57 +0000] "GET /documentation.html/ HTTP/1.1" 404 158 "http://localhost:8080/documentation.html" "PostmanRuntime/7.36.3"
 ::1 - - [14/Mar/2024:11:09:50 +0000] "GET /documentation.html/ HTTP/1.1" 404 158 "http://localhost:8080/documentation.html" "PostmanRuntime/7.36.3"
 ::1 - - [14/Mar/2024:11:13:57 +0000] "GET /documentation.html/ HTTP/1.1" 404 158 "http://localhost:8080/documentation.html" "PostmanRuntime/7.36.3"
+::1 - - [15/Mar/2024:10:00:01 +0000] "GET /movies/AMERICAN%20PIE HTTP/1.1" 404 160 "-" "PostmanRuntime/7.36.3"
+::1 - - [15/Mar/2024:10:00:08 +0000] "GET /movies/AMERICAN%20PIE HTTP/1.1" 404 160 "-" "PostmanRuntime/7.36.3"
+::1 - - [15/Mar/2024:10:00:58 +0000] "GET /movies/comedy HTTP/1.1" 404 152 "-" "PostmanRuntime/7.36.3"
