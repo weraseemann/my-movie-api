@@ -87,10 +87,6 @@ let topMovies = [
     res.sendFile('public/documentation.html', { root: __dirname });
   });
   
-  app.get('/movies', (req, res) => {
-    res.json(topMovies);
-  });
-
   app.get('/movies/genre/:genreId', (req, res) => {
    res.json(topMovies.filter( (topMovies) =>
     { return topMovies.genre === req.params.genreId }));
