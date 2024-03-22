@@ -96,6 +96,47 @@ let topMovies = [
     res.json(topMovies.find( (topMovie) =>
       { return topMovie.title === req.params.titleId }));
   });
+
+// Adds data for a new movie to our list of movies.
+app.post('/movies/', (req, res) => {
+  let newMovie = req.body;
+
+  if (!newMovie.title) {
+    const message = 'Missing title in request body';
+    res.status(400).send(message);
+  } else {
+    newMovie.id = uuid.v4();
+    topMovies.push(newMovie);
+    res.status(201).send(newMovie);
+  }
+});
+
+// Deletes a movie from the list by ID
+app.delete('/movies/:movieId', (req, res) => {
+  let movie = movies.find((movie) => { return movie.id === req.params.id });
+
+  if (movie) {
+    movies = movies.filter((obj) => { return obj.id !== req.params.id });
+    res.status(201).send('Movie ' + req.params.id + ' was deleted.');
+  }
+});
+
+app.put('/movies/:movieId', (req, res) => {
+  let movieIndex = movies.findIndex((movie) => movie.title === req.params.title);
+
+  if (movieIndex !== -1) {
+    movies[movieIndex] = {
+      title: req.params.title,
+      starring: req.params.starring,
+      director: req.params.director,
+      year: parseInt(req.params.year),
+      genre: req.params.genre
+    };
+    res.status(201).send('Movie ' + req.params.title + ' was updated.');
+  } else {
+    res.status(404).send('Movie with the title ' + req.params.title + ' was not found.');
+  }
+});
   
   app.use('/documentation.html', express.static('public'));
   

@@ -100,6 +100,37 @@ td {
                     "year": 2012,
                     "genre": "comedy"
                 }, 
+            </tr>    
+            <tr>
+                <td>Add Movie to the list of the movies</td>
+                <td>/movies</td>
+                <td>POST</td>
+                <td>Required (JWT)</td>
+                <td>None</td>
+                <td>JSON response holding data of the movie required by the given structure. For example:   
+                    {
+                    "title": "21 JUMP STREET",
+                    "starring": "Jonah Hill, Channing Tatum, Brie Larson, Dave Franco",
+                    "director": "Phil Lord, Chris Miller",
+                    "year": 2012,
+                    "genre": "comedy"
+                }, </td>
+            </tr>
+            <tr>
+                <td>Delete movie</td>
+                <td>/movies/:movieId</td>
+                <td>DELETE</td>
+                <td>Required (JWT)</td>
+                <td>None</td>
+                <td>JSON response for example: Movie "AMERICAN PIE" was deleted.</td>
+            </tr>
+            <tr>
+                <td>Update movie</td>
+                <td>/movies/:movieId</td>
+                <td>UPDATE</td>
+                <td>Required (JWT)</td>
+                <td>None</td>
+                <td>JSON response for example: Movie "AMERICAN PIE" was updated.</td>
             </tr>
             <tr>
                 <td>API Documentation</td>
@@ -109,6 +140,7 @@ td {
                 <td>None</td>
                 <td>JSON response holding data of the documentation.html file</td>
             </tr>
+        
         </tbody>
 </body>
 </html>
