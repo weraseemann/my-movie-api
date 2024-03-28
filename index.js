@@ -1,11 +1,23 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const uuid =require('uuid');
+
 const morgan = require('morgan');
     fs = require('fs'), // import built in node modules fs and path 
-  path = require('path');
+    path = require('path');
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
+
+const mongoose = require('mongoose');
+const Models = require ('./models.js');
+const Movies = Models.Movie;
+const Users = Models.User;
+mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true});
 
 let topMovies = [
     {
+      movieId: 1,
       title: '21 JUMP STREET',
       starring: 'Jonah Hill, Channing Tatum, Brie Larson, Dave Franco',
       director:  'Phil Lord, Chris Miller',
@@ -13,6 +25,7 @@ let topMovies = [
       genre: "comedy"
     },
     {
+      movieId: 2, 
       title: 'ALL ABOUT MY MOTHER',
       starring: 'Cecilia Roth, Eloy Azorín, Marisa Paredes, Penélope Cruz',
       director: 'Pedro Almodóvar',
@@ -20,6 +33,7 @@ let topMovies = [
       genre: "comedy"
     },
     {
+      movieId: 3, 
       title: 'AMERICAN PIE',
       starring: 'Jason Biggs, Shannon Elizabeth, Alyson Hannigan, Chris Klein',
       director: 'Paul Weitz',
@@ -27,14 +41,15 @@ let topMovies = [
       genre: "comedy"
     },
     {
+      movieId: 4, 
     title: 'ANNIE HALL',
     starring: 'Woody Allen, Diane Keaton, Tony Roberts, Carol Kane',
     director: 'Woody Allen',
     year: 1977,
     genre: "comedy"
-  
     },
     {
+      movieId: 5, 
     title: 'THE APARTMENT',
     starring: 'Jack Lemmon, Shirley MacLaine, Fred MacMurray, Ray Walston',
     director: 'Billy Wilder',
@@ -42,6 +57,7 @@ let topMovies = [
     genre: "comedy"
     },
     {
+      movieId: 6, 
     title: 'BARBERSHOP',
     starring: 'Ice Cube, Anthony Anderson, Cedric the Entertainer, Sean Patrick Thomas',
     director: 'Tim Story',
@@ -49,6 +65,7 @@ let topMovies = [
     genre: "comedy"
     },
     {
+      movieId: 7, 
     title: 'BEING THERE',
     starring: 'Peter Sellers, Shirley MacLaine, Jack Warden, Melvyn Douglas',
     director: 'Hal Ashby',
@@ -56,6 +73,7 @@ let topMovies = [
     genre: "comedy"
     },
     {
+      movieId: 8, 
     title: 'BEST IN SHOW',
     starring: "Michael Hitchcock, Parker Posey, Eugene Levy, Catherine O'Hara",
     director: 'Christopher Guest',
@@ -63,6 +81,7 @@ let topMovies = [
     genre: "comedy"
     },
     {
+      movieId: 9, 
     title: 'BIG',
     starring: 'Tom Hanks, Elizabeth Perkins, Robert Loggia, John Heard',
     director: 'Penny Marshall',
@@ -70,6 +89,7 @@ let topMovies = [
     genre: "comedy"
     },
     {
+      movieId: 10, 
     title: 'BOOKSMART',
     starring: 'Kaitlyn Dever, Beanie Feldstein, Jessica Williams, Jason Sudeikis',
     director: 'Olivia Wilde',
@@ -86,6 +106,10 @@ let topMovies = [
   app.get('/documentation', (req, res) => {                  
     res.sendFile('public/documentation.html', { root: __dirname });
   });
+
+  app.get('/movies', (req, res) => {
+    res.json(topMovies);
+  });
   
   app.get('/movies/genre/:genreId', (req, res) => {
    res.json(topMovies.filter( (topMovies) =>
@@ -98,44 +122,66 @@ let topMovies = [
   });
 
 // Adds data for a new movie to our list of movies.
-app.post('/movies/', (req, res) => {
+app.post('/movies', (req, res) => {
   let newMovie = req.body;
-
+//console.log(newMovie);
   if (!newMovie.title) {
     const message = 'Missing title in request body';
     res.status(400).send(message);
   } else {
-    newMovie.id = uuid.v4();
-    topMovies.push(newMovie);
-    res.status(201).send(newMovie);
+    // newMovie.id = uuid.v4();
+    const newMovieWithId = {id: uuid.v4(), ...newMovie};
+    topMovies.push(newMovieWithId);
+    res.status(201).send(newMovieWithId);
   }
 });
 
-// Deletes a movie from the list by ID
-app.delete('/movies/:movieId', (req, res) => {
-  let movie = movies.find((movie) => { return movie.id === req.params.id });
+// Deletes a movie from the list by Title
+/* app.delete('/movies/:movieId', (req, res) => {
+  let movie = topMovies.find((movie) => { return movie.movieId === req.params.movieId });
 
   if (movie) {
-    movies = movies.filter((obj) => { return obj.id !== req.params.id });
-    res.status(201).send('Movie ' + req.params.id + ' was deleted.');
+    topMovies = topMovies.filter((obj) => { return obj.movieId !== req.params.movieId });
+    res.status(201).send('Movie ' + movie.title + ' was deleted.');
+  }
+}); */
+
+app.delete('/movies/:movieId', (req, res) => {
+  let movieToDelete = topMovies.find(movie => movie.movieId == req.params.movieId);
+  //console.log(req.params.movieId, movieToDelete);
+    if (movieToDelete) {
+    topMovies = topMovies.filter(obj => obj.movieId !== req.params.movieId);
+    res.status(201).send('Movie ' + movieToDelete.title + ' was deleted.');
+  } else {
+    res.status(404).send('Movie not found.');
   }
 });
 
-app.put('/movies/:movieId', (req, res) => {
-  let movieIndex = movies.findIndex((movie) => movie.title === req.params.title);
+/* app.put('/movies/:movieId', (req, res) => {
+  let movie = topMovies.find((movie) => { return movie.movieId == req.params.movieId });
 
-  if (movieIndex !== -1) {
-    movies[movieIndex] = {
-      title: req.params.title,
-      starring: req.params.starring,
-      director: req.params.director,
-      year: parseInt(req.params.year),
-      genre: req.params.genre
-    };
-    res.status(201).send('Movie ' + req.params.title + ' was updated.');
+  if (movie) {
+    movie.req.params[req.params.body] = parseInt(req.params.body);
+    res.status(201).send('Movie ' + movie.req.params + ' was changed ' + req.params.body);
   } else {
-    res.status(404).send('Movie with the title ' + req.params.title + ' was not found.');
+    res.status(404).send('Movie with title ' + req.params.title + ' was not found.');
   }
+}); */
+
+app.put('/movies/:movieId', (req, res) => {
+const movieId = req.params.movieId;
+const updatedMovieDetails = req.body;
+
+// Find the index of the movie to be updated
+const movieIndex = topMovies.findIndex(movie => movie.movieId == movieId);
+//console.log(req.params.movieId, updatedMovieDetails)
+if (movieIndex !== -1) {
+// Update the movie details
+topMovies[movieIndex] = { ...topMovies[movieIndex], ...updatedMovieDetails };
+res.status(200).send('Movie with ID ' + movieId + ' was updated.');
+} else {
+res.status(404).send('Movie with ID ' + movieId + ' not found.');
+}
 });
   
   app.use('/documentation.html', express.static('public'));
