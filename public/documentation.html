@@ -109,6 +109,7 @@ td {
                 <td>None</td>
                 <td>JSON response holding data of the movie required by the given structure. For example:   
                     {
+                    "movieId": 1
                     "title": "21 JUMP STREET",
                     "starring": "Jonah Hill, Channing Tatum, Brie Larson, Dave Franco",
                     "director": "Phil Lord, Chris Miller",
@@ -118,7 +119,7 @@ td {
             </tr>
             <tr>
                 <td>Delete movie</td>
-                <td>'/movies/title/:titleId'</td>
+                <td>'/movies/:movieId'</td>
                 <td>DELETE</td>
                 <td>Required (JWT)</td>
                 <td>None</td>
