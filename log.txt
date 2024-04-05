@@ -56,3 +56,6 @@
 ::1 - - [04/Apr/2024:08:17:28 +0000] "GET /movies/genre/comedy HTTP/1.1" 404 158 "-" "PostmanRuntime/7.37.0"
 ::1 - - [04/Apr/2024:10:36:42 +0000] "GET /users/:Username HTTP/1.1" 404 154 "-" "PostmanRuntime/7.37.0"
 ::1 - - [04/Apr/2024:12:47:27 +0000] "GET /movies/AMERICAN%20PIE HTTP/1.1" 404 160 "-" "PostmanRuntime/7.37.0"
+::1 - - [05/Apr/2024:08:12:17 +0000] "GET /movies/genre/comedy HTTP/1.1" 404 158 "-" "PostmanRuntime/7.37.0"
+::1 - - [05/Apr/2024:08:12:34 +0000] "GET /movies/genre/comedy HTTP/1.1" 404 158 "-" "PostmanRuntime/7.37.0"
+::1 - - [05/Apr/2024:08:20:20 +0000] "POST /movies HTTP/1.1" 404 146 "-" "PostmanRuntime/7.37.0"

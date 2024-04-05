@@ -18,9 +18,10 @@ mongoose.connect('mongodb://localhost:27017/myFlixDB', {
   useNewUrlParser: true, 
   useUnifiedTopology: true,
 });
-
+// Logging midleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(morgan("common"));
 
   // default test response when at /
     app.get('/', (req, res) => {
