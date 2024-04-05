@@ -8,13 +8,13 @@ const morgan = require('morgan');
 const app = express();
 
 const mongoose = require('mongoose');
-const Models = require ('./models.js');
+const Models = require('./models.js');
 
 const Movies = Models.Movie;
 const Users = Models.User;
 const Genres = Models.Genre;
 const Directors = Models.Director;
-mongoose.connect('mongodb://localhost:27017/myFlixDB', { 
+mongoose.connect('mongodb://localhost:27017/cfDB', { 
   useNewUrlParser: true, 
   useUnifiedTopology: true,
 });
@@ -83,7 +83,7 @@ app.post('/users', async (req, res) =>{
     if (user){
       return res.status(400).send(req.body.Username + 'already exists');
     } else {
-      Users
+      return Users
       .create({
         Username: req.body.Username,
         Password: req.body.Password,
@@ -164,7 +164,7 @@ app.post('/users/:Username/movies/:MovieID', async (req, res) => {
 
 // Delete a movie from a user's list of favorites
 app.delete('/users/:Username/movies/:MovieID', async (req, res) => {
-  await Users.findOneAndUpdate({ Username: req.params.Username }, {
+  await Users.findOneAndDelete({ Username: req.params.Username }, {
      $pull: { FavoriteMovies: req.params.MovieID }
    },
    { new: true }) // This line makes sure that the updated document is returned
@@ -179,7 +179,7 @@ app.delete('/users/:Username/movies/:MovieID', async (req, res) => {
 
 // Delete a user by username
 app.delete('/users/:Username', async (req, res) => {
-  await Users.findOneAndRemove({ Username: req.params.Username })
+  await Users.findOneAndDelete({ Username: req.params.Username })
     .then((user) => {
       if (!user) {
         res.status(400).send(req.params.Username + ' was not found');
@@ -196,6 +196,7 @@ app.delete('/users/:Username', async (req, res) => {
 app.get('/documentation', (req, res) => {                  
   res.sendFile('public/documentation.html', { root: __dirname });
 });
+
 app.use('/documentation.html', express.static('public'));
   
   // create a write stream (in append mode)
