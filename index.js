@@ -28,9 +28,14 @@ app.use(morgan("common"));
     res.send('Welcome to myFlix club!');
   });
   
+app.get('/documentation', (req, res) => {                  
+  res.sendFile('public/documentation.html', { root: __dirname });
+});
+
+  
   //return JSON object when at movies
-  app.get('/movies', (req, res) => {
-    Movies.find()
+  app.get('/movies', async (req, res) => {
+    await Movies.find()
       .then((movies) => {
         res.status(201).json(movies);
       })
@@ -41,10 +46,14 @@ app.use(morgan("common"));
    });
 
   //GET JSON genre info when looking for specific genre
-  app.get('/genre/:Name', (req, res) => {
-   Genres.findOne({Name: req.params.Name})
-   .then ((genre) => {
-    res.json(genre.Description);
+  app.get('/genre/:Name', async (req, res) => {
+   await Genres.findOne({name: req.params.Name})
+   .then((genre) => {
+    if(genre === null) {
+     res.status(404).send('Not found');
+    } else {
+      res.json(genre.description);
+    }
    })
    .catch((err) => {
     console.error(err);
@@ -53,8 +62,8 @@ app.use(morgan("common"));
   });
 
   //GET JSON movie info when looking for specific title
- app.get('/movies/:Title', (req, res) => {
-  Movies.findOne({Title:req.params.Title})
+ app.get('/movies/:Title', async (req, res) => {
+    await Movies.findOne({Title:req.params.Title})
   .then((movie) => {
     res.json(movie);
  })
@@ -64,9 +73,22 @@ app.use(morgan("common"));
   });
   });
 
+//GET JSON movies when looking for specific genre
+app.get('/movies/genre/:Name', async (req, res) => {
+  console.log(req.params)
+  await Movies.find({"genre.name": req.params.Name})
+.then((movie) => {
+  res.json(movie);
+})
+.catch((err) => {
+  console.error(err);
+  res.status(500).send('Error:' + err);
+});
+});
+
   //GET JSON movie info when looking for specific title
- app.get('/director/:Name', (req, res) => {
-  Directors.findOne({Name:req.params.Name})
+ app.get('/director/:directorId', (req, res) => {
+  return Directors.findOne({Name:req.params.Name})
   .then((director) => {
     res.json(director);
  })
@@ -191,10 +213,6 @@ app.delete('/users/:Username', async (req, res) => {
       console.error(err);
       res.status(500).send('Error: ' + err);
     });
-});
-
-app.get('/documentation', (req, res) => {                  
-  res.sendFile('public/documentation.html', { root: __dirname });
 });
 
 app.use('/documentation.html', express.static('public'));
