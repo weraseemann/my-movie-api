@@ -63,7 +63,7 @@ app.get('/documentation', (req, res) => {
 
   //GET JSON movie info when looking for specific title
  app.get('/movies/:Title', async (req, res) => {
-    await Movies.findOne({Title:req.params.Title})
+    await Movies.findOne({title:req.params.Title})
   .then((movie) => {
     res.json(movie);
  })
@@ -86,9 +86,9 @@ app.get('/movies/genre/:Name', async (req, res) => {
 });
 });
 
-  //GET JSON movie info when looking for specific title
- app.get('/director/:directorId', (req, res) => {
-  return Directors.findOne({Name:req.params.Name})
+  //GET JSON director from the directorsDB
+ app.get('/director/:Name', (req, res) => {
+  return Directors.findOne({name:req.params.Name})
   .then((director) => {
     res.json(director);
  })
@@ -97,6 +97,17 @@ app.get('/movies/genre/:Name', async (req, res) => {
     res.status(500).send('Error:' + err);
   });
   });
+  //GET JSON director from the moviesDB
+  app.get('/movies/director/:Name', (req, res) => {
+    return Movies.find({'director.name':req.params.Name})
+    .then((director) => {
+      res.json(director);
+   })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error:' + err);
+    });
+    });
 
 //Add new user
 app.post('/users', async (req, res) =>{
