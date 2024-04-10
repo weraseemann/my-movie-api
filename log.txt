@@ -89,3 +89,4 @@
 ::1 - - [05/Apr/2024:18:54:00 +0000] "GET /movie/genre/Thriller HTTP/1.1" 404 159 "-" "PostmanRuntime/7.37.0"
 ::1 - - [05/Apr/2024:18:54:10 +0000] "GET /movie/genre/Comedy HTTP/1.1" 404 157 "-" "PostmanRuntime/7.37.0"
 ::1 - - [06/Apr/2024:09:09:44 +0000] "POST //users/alice_smith/movies/Inception HTTP/1.1" 404 175 "-" "PostmanRuntime/7.37.0"
+::1 - - [09/Apr/2024:13:02:28 +0000] "POST /movies/1?Username=test111&Password=123456789 HTTP/1.1" 404 148 "-" "PostmanRuntime/7.37.0"
