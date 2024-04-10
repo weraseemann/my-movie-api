@@ -7,6 +7,7 @@ const morgan = require('morgan');
     path = require('path');
 const app = express();
 
+//Recuire necessary modules
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 
@@ -14,6 +15,7 @@ const Movies = Models.Movie;
 const Users = Models.User;
 const Genres = Models.Genre;
 const Directors = Models.Director;
+
 mongoose.connect('mongodb://localhost:27017/cfDB', { 
   useNewUrlParser: true, 
   useUnifiedTopology: true,

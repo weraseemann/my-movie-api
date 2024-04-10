@@ -7,9 +7,9 @@ require('./passport'); //API local passport file
 
 let generateJWTToken = (user) => {
     return jwt.sign(user, jwtSecret, {
-        subject:user.Username, //This is ther username you are encoding in the JWT
+        subject: user.Username, //This is ther username you are encoding in the JWT
         expiresIn: '7d', // This specifies that this token will exüpire in 7 days
-        alorithm: 'HS256' //This is the algorithm used to "sign" or encode the values of the JWT
+        algorithm: 'HS256' //This is the algorithm used to "sign" or encode the values of the JWT
     });
 }
 
@@ -27,7 +27,7 @@ module.exports = (router) => {
                 if (error) {
                     res.send(error);
                 }
-                let token = generateJWTToken(user, toJSON());
+                let token = generateJWTToken(user.toJSON());
                 return res.json({ user: user, token: token }); //This is, in fact, ES6 shorthand for res.json({ user: user, token: token }). With ES6, if your keys are the same as your values, you can use this shorthand.
             });
         })(req,res);
