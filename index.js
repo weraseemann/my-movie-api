@@ -25,6 +25,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(morgan("common"));
 
+const cors = require('cors');
+app.use(cors());
+
 let auth = require('./auth')(app);//the app argument ensures that Express is available in your “auth.js” file as well
 const passport = require('passport');
 require('./passport');
@@ -187,9 +190,12 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
 });
 
 // Add a movie to a user's list of favorites
-app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.post('/users/:Username/movies/favourites/:MovieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  if (req.params.Username !== req.user.Username) {
+    return res.status(403).send('You are not authorized to make changes to this user.');
+  }
   await Users.findOneAndUpdate({ Username: req.params.Username }, {
-     $push: { FavoriteMovies: req.params.MovieID }
+     $push: { FavouriteMovies: req.params.MovieId }
    },
    { new: true }) // This line makes sure that the updated document is returned
   .then((updatedUser) => {
@@ -202,11 +208,13 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
 });
 
 // Delete a movie from a user's list of favorites
-app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  await Users.findOneAndDelete({ Username: req.params.Username }, {
-     $pull: { FavoriteMovies: req.params.MovieID }
-   },
-   { new: true }) // This line makes sure that the updated document is returned
+app.delete('/users/:Username/movies/favourites/:MovieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  console.log(req.params.MovieId);
+  await Users.findOneAndUpdate(
+    { Username: req.params.Username }, 
+    { $pull: { FavouriteMovies: req.params.MovieId }},
+    { new: true }// This line makes sure that the updated document is returned
+  ) 
   .then((updatedUser) => {
     res.json(updatedUser);
   })
@@ -218,6 +226,9 @@ app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { se
 
 // Delete a user by username
 app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  if (req.params.Username !== req.user.Username) {
+    return res.status(403).send('You are not authorized to delete this user.');
+  }
   await Users.findOneAndDelete({ Username: req.params.Username })
     .then((user) => {
       if (!user) {
