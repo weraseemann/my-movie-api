@@ -278,8 +278,12 @@ app.use('/documentation.html', express.static('public'));
   });
 
   // listen for requests
-  app.listen(8080, () => {
+  /* app.listen(8080, () => {
     console.log('Your app is listening on port 8080.');
   });
+   */
   
-  
+  const port = process.env.Port || 8080;
+  app.listen(port, '0.0.0.0',() => {
+    console.log('Listening on Port' + port);
+  });
