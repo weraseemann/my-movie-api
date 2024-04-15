@@ -72,7 +72,7 @@ td {
             </tr>
             <tr>
                 <td>Get data about a movie by name</td>
-                <td>/movies/title/:name</td>
+                <td>/movies/:Title</td>
                 <td>GET</td>
                 <td>Required (JWT)</td>
                 <td>None</td>
@@ -88,7 +88,7 @@ td {
             </tr>
             <tr>
                 <td>Get data about movies by genre</td>
-                <td>/movies/genre/:genre</td>
+                <td>/movies/genre/:Name</td>
                 <td>GET</td>
                 <td>Required (JWT)</td>
                 <td>None</td>
@@ -100,38 +100,83 @@ td {
                     "year": 2012,
                     "genre": "comedy"
                 }, 
+            </tr>
+            <td>Get Director by Name </td>
+                <td>/director/:Name</td>
+                <td>GET</td>
+                <td>Required (JWT)</td>
+                <td>None</td>
+                <td>JSON response holding data of the movie required by genre. For example:   
+                    {
+                    "_id": "65fcljh19985jdfjha1a",
+                    "name": "Quentin Tarantino",
+                    "bio": "Quentin Tarantino is an american filmmaker and actor known for his nonliner storytelling.",
+                    "birthdate": "1963-03-27T00:00:00.000Z",
+                    "deathyear": "null"
+                }, 
             </tr>    
             <tr>
-                <td>Add Movie to the list of the movies</td>
-                <td>/movies</td>
+                <td>Add new user</td>
+                <td>/users</td>
                 <td>POST</td>
                 <td>Required (JWT)</td>
                 <td>None</td>
                 <td>JSON response holding data of the movie required by the given structure. For example:   
                     {
-                    "movieId": 1
-                    "title": "21 JUMP STREET",
-                    "starring": "Jonah Hill, Channing Tatum, Brie Larson, Dave Franco",
-                    "director": "Phil Lord, Chris Miller",
-                    "year": 2012,
-                    "genre": "comedy"
-                }, </td>
+                    "Username": "test108"
+                    "Password": "12345678",
+                    "Email": "testUserEmail@gmail.com",
+                    "Birthday": "1983-04-06",
+                }, 
+                </td>
             </tr>
             <tr>
-                <td>Delete movie</td>
-                <td>'/movies/:movieId'</td>
+                <td>Delete user</td>
+                <td>'/user/:Name'</td>
                 <td>DELETE</td>
                 <td>Required (JWT)</td>
                 <td>None</td>
-                <td>JSON response for example: Movie "AMERICAN PIE" was deleted.</td>
+                <td>JSON response for example: test108 was deleted.</td>
             </tr>
             <tr>
-                <td>Update movie</td>
-                <td>/movies/:movieId</td>
+                <td>Update user</td>
+                <td>/user/:Name</td>
                 <td>UPDATE</td>
                 <td>Required (JWT)</td>
                 <td>None</td>
                 <td>JSON response for example: Movie "AMERICAN PIE" was updated.</td>
+            </tr>
+            <td> Add favourite movie to the user</td>
+                <td>/users/:Username/movies/favourites/:MovieId</td>
+                <td>POST</td>
+                <td>Required (JWT)</td>
+                <td>None</td>
+                <td>JSON response for example:    {
+                    {
+                        "Username": "test108"
+                        "Password": "12345678",
+                        "Email": "testUserEmail@gmail.com",
+                        "Birthday": "1983-04-06",
+                        "FavouriteMovies": [],
+                        "_id" : "660fb766c291da42c3b61c4b"
+                    }, 
+                    </td>
+                }, </td>
+            </tr>
+            <td> DELETE favourite movie to the user</td>
+                <td>/users/:Username/movies/favourites/:MovieId</td>
+                <td>DELETE</td>
+                <td>Required (JWT)</td>
+                <td>None</td>
+                <td>JSON response for example:
+                    {
+                        "Username": "test108"
+                        "Password": "12345678",
+                        "Email": "testUserEmail@gmail.com",
+                        "Birthday": "1983-04-06",
+                        "FavouriteMovies": [],
+                    }, 
+                </td>
             </tr>
             <tr>
                 <td>API Documentation</td>
