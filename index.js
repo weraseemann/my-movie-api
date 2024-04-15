@@ -16,6 +16,8 @@ const Users = Models.User;
 const Genres = Models.Genre;
 const Directors = Models.Director;
 
+const { check, validationResult } = require('express-validator');
+
 mongoose.connect('mongodb://localhost:27017/cfDB', { 
   useNewUrlParser: true, 
   useUnifiedTopology: true,
@@ -25,6 +27,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(morgan("common"));
 
+//use CORS Cross-Origin-Resorce Sharing
 const cors = require('cors');
 app.use(cors());
 
@@ -119,8 +122,24 @@ app.get('/movies/genre/:Name', passport.authenticate('jwt', { session: false }),
     });
 
 //Add new user
-app.post('/users', async (req, res) => {
-  await Users.findOne({Username: req.body.Username})
+app.post('/users', [
+  check('Username', 'Username is required').isLength({min: 5}),
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('Password', 'Password is required').not().isEmpty(),
+  check('Email', 'Email does not appear to be valid').isEmail()
+],
+ async (req, res) => {
+
+  // check the validation object for errors
+  let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+  
+  let hashedPassword = Users.hashedPassword(req.body.Password);
+  
+  await Users.findOne({Username: req.body.Username}) // Search to see if a user with the requested username already exists
   .then((user) =>{
     if (user){
       return res.status(400).send(req.body.Username + 'already exists');
@@ -128,7 +147,7 @@ app.post('/users', async (req, res) => {
       return Users
       .create({
         Username: req.body.Username,
-        Password: req.body.Password,
+        Password: hashedPassword,
         Email: req.body.Email,
         Birthday: req.body.Birthday
       })
@@ -209,12 +228,13 @@ app.post('/users/:Username/movies/favourites/:MovieId', passport.authenticate('j
 
 // Delete a movie from a user's list of favorites
 app.delete('/users/:Username/movies/favourites/:MovieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  console.log(req.params.MovieId);
-  await Users.findOneAndUpdate(
-    { Username: req.params.Username }, 
-    { $pull: { FavouriteMovies: req.params.MovieId }},
-    { new: true }// This line makes sure that the updated document is returned
-  ) 
+  if (req.params.Username !== req.user.Username) {
+    return res.status(403).send('You are not authorized to make changes to this user.');
+  }
+  await Users.findOneAndUpdate({ Username: req.params.Username }, {
+     $pull: { FavouriteMovies: req.params.MovieId }
+   },
+   { new: true }) // This line makes sure that the updated document is returned
   .then((updatedUser) => {
     res.json(updatedUser);
   })
