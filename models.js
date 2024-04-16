@@ -1,5 +1,5 @@
 const mongoose = require ('mongoose');
-const bcrypt = require(bcypt);
+const bcrypt = require(bcrypt);
 
 let directorSchema = mongoose.Schema ({
     name: String,
