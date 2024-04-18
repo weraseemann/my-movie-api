@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const uuid =require('uuid');
 
+
 const morgan = require('morgan');
     fs = require('fs'), // import built in node modules fs and path 
     path = require('path');
@@ -24,10 +25,16 @@ const { check, validationResult } = require('express-validator');
   useUnifiedTopology: true,
 }); */
 
-mongoose.connect('process.env.CONNECTION_URI', { 
+mongoose.connect(process.env.CONNECTION_URI, { 
   useNewUrlParser: true, 
   useUnifiedTopology: true,
 });
+
+/* mongoose.connect('mongodb+srv://myFlixDbAdmin:LovingEyes108@MyFlixDB.pwumoxo.mongodb.net/?retryWrites=true&w=majority&appName=MyFlixDB', {
+  useNewUrlParser: true, 
+  useUnifiedTopology: true,
+}
+); */
 
 // Logging midleware
 app.use(bodyParser.json());
@@ -144,7 +151,7 @@ app.post('/users', [
       return res.status(422).json({ errors: errors.array() });
     }
   
-  let hashedPassword = Users.hashedPassword(req.body.Password);
+  let hashedPassword = Users.hashPassword(req.body.Password);
   
   await Users.findOne({Username: req.body.Username}) // Search to see if a user with the requested username already exists
   .then((user) =>{
