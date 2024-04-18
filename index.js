@@ -30,11 +30,6 @@ mongoose.connect(process.env.CONNECTION_URI, {
   useUnifiedTopology: true,
 });
 
-/* mongoose.connect('mongodb+srv://myFlixDbAdmin:LovingEyes108@MyFlixDB.pwumoxo.mongodb.net/?retryWrites=true&w=majority&appName=MyFlixDB', {
-  useNewUrlParser: true, 
-  useUnifiedTopology: true,
- }
-); */
 
 // Logging midleware
 app.use(bodyParser.json());
