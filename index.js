@@ -25,16 +25,16 @@ const { check, validationResult } = require('express-validator');
   useUnifiedTopology: true,
 }); */
 
-/* mongoose.connect(process.env.CONNECTION_URI, { 
+mongoose.connect(process.env.CONNECTION_URI, { 
   useNewUrlParser: true, 
   useUnifiedTopology: true,
-}); */
+});
 
-mongoose.connect('mongodb+srv://myFlixDbAdmin:LovingEyes108@MyFlixDB.pwumoxo.mongodb.net/?retryWrites=true&w=majority&appName=MyFlixDB', {
+/* mongoose.connect('mongodb+srv://myFlixDbAdmin:LovingEyes108@MyFlixDB.pwumoxo.mongodb.net/?retryWrites=true&w=majority&appName=MyFlixDB', {
   useNewUrlParser: true, 
   useUnifiedTopology: true,
  }
-);
+); */
 
 // Logging midleware
 app.use(bodyParser.json());
