@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const uuid =require('uuid');
 
-
 const morgan = require('morgan');
     fs = require('fs'), // import built in node modules fs and path 
     path = require('path');
@@ -19,11 +18,6 @@ const Directors = Models.Director;
 
 const { check, validationResult } = require('express-validator');
 
-// to connect to Mongoose locally ->save for testing
-/* mongoose.connect('mongodb://localhost:27017/cfDB', { 
-  useNewUrlParser: true, 
-  useUnifiedTopology: true,
-}); */
 
 mongoose.connect(process.env.CONNECTION_URI, { 
   useNewUrlParser: true, 
@@ -199,6 +193,9 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), as
 });
 // Update a user's info, by username
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  if (req.params.Username !== req.user.Username) {
+    return res.status(403).send('You are not authorized to make changes to this user.');
+  }
   await Users.findOneAndUpdate({ Username: req.params.Username }, 
   { $set:
     {
@@ -287,13 +284,8 @@ app.use('/documentation.html', express.static('public'));
     console.error(err.stack);
     res.status(500).send('Something broke!');
   });
-
-  // listen for requests
-  /* app.listen(8080, () => {
-    console.log('Your app is listening on port 8080.');
-  });
-   */
   
+
   const port = process.env.PORT || 8080;
   app.listen(port, '0.0.0.0',() => {
     console.log('Listening on Port' + port);
