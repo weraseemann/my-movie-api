@@ -51,7 +51,7 @@ app.get('/documentation', passport.authenticate('jwt', { session: false }), (req
 
 
 //return JSON object when at movies
-app.get('/movies', /*passport.authenticate('jwt', { session: false }),*/ async (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.find()
     .then((movies) => {
       res.status(201).json(movies);
