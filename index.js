@@ -206,6 +206,8 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
       }
     },
     { new: true }) // To make sure that the updated document is returned
+    // Prevent the 'password' field from returning.
+    .select('-password')
     .then((updatedUser) => {
       res.json(updatedUser);
     })
