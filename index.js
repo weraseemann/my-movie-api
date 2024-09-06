@@ -33,7 +33,7 @@ app.use(morgan("common"));
 //use CORS Cross-Origin-Resorce Sharing
 const cors = require('cors');
 app.use(cors());
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234', 'mynightflix.netlify.app'];
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234', 'https://mynightflix.netlify.app'];
 
 app.use(cors({
   origin: (origin, callback) => {
