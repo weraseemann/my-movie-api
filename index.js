@@ -38,7 +38,7 @@ app.use(morgan("common"));
 */
 const cors = require('cors');
 app.use(cors());
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234', 'https://mynightflix.netlify.app'];
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234', 'https://mynightflix.netlify.app', 'https://weraseemann.github.io'];
 
 app.use(cors({
   origin: (origin, callback) => {
